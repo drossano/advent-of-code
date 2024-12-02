@@ -1,9 +1,3 @@
-# Find out how many reports are safe
-  # 2 things must be true
-    # numbers in list are either increasing or decreasing
-    # Numbers incease at most by 3
-
-
 import numpy as np
 
 def get_reports(filename):
@@ -19,14 +13,14 @@ def inc_or_dec(report):
 
 def is_level_change_safe(report):
   changes = np.abs(np.diff(report))
-  safe = any(changes) < 1 or any(changes > 3)
+  safe = all(change >= 1 for change in changes) and all(change <= 3 for change in changes)
   return safe
 
 
 def main():
   safe_reports = 0
   
-  reports = get_reports('example.txt')
+  reports = get_reports('input.txt')
   for report in reports:
     if inc_or_dec(report) == True:
       if is_level_change_safe(report) == True:
