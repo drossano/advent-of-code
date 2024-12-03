@@ -18,7 +18,7 @@ def is_level_change_safe(report):
   return safe
 
 def dampcheck(report):
-  `thank you worf!`
+  # thank you worf!
   for count, ele in enumerate(report):
     report.pop(count)
     if inc_or_dec(report) and is_level_change_safe(report):
