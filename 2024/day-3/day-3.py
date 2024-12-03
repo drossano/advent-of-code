@@ -15,9 +15,25 @@ def get_memory(filename):
 def find_instructions(corrupted_memory):
   instructions = re.findall(r"mul\(\d+,\d+\)|don't\(\)|do\(\)", corrupted_memory)
   return instructions
-  #"[m][u][l][(]\d+[,]\d+[)]"gm
-#   add ints to a two tuple
 
+def get_factors_from_instructions(instructions):
+  state = True
+  factors =  []
+  for instruction in instructions:
+    if instruction == "don't()":
+      state = False
+    elif instruction == "do()":
+      state = True
+    else:
+      if state == True:
+        factors.append(find_factors(instruction))
+  return factors
+
+    
+
+def find_factors(mul_text):
+  mul = re.findall(r"[m][u][l][(](\d+)[,](\d+)[)]", mul_text)
+  return mul[0]
 
 
   
@@ -30,12 +46,12 @@ def multiply_factors(factors):
 
 def main ():
   total = 0
-  memory = get_memory('example.txt')
+  memory = get_memory('input.txt')
   instructions = find_instructions(memory)
-  print (instructions)
-  # for factors in factor_list:
-  #   product = multiply_factors(factors)
-  #   total += product
-  # print("Total = ", total)
+  factor_list = get_factors_from_instructions(instructions)
+  for factors in factor_list:
+    product = multiply_factors(factors)
+    total += product
+  print("Total = ", total)
 
 main()
