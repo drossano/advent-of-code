@@ -2,17 +2,19 @@ import regex as re
 
 # Part 1 goal is to get total of muls
 # a mul is OMLY mul(INT,INT)
-# scan through text and retrieve ints in the right sequence as tuples?
+# scan through text and retrieve ints in the right sequence as tuples? if dont shows up ignore until do
+
 #   scan throuh text
+
 
 def get_memory(filename):
   with open(filename) as f:
     memory = f.read()
     return memory
-#   find a mul(INT,INT) sequence
-def find_factors(corrupted_memory):
-  muls = re.findall(r"[m][u][l][(](\d+)[,](\d+)[)]", corrupted_memory)
-  return muls
+#   find a muls(INT,INT) sequence, don'ts and dos
+def find_instructions(corrupted_memory):
+  instructions = re.findall(r"mul\(\d+,\d+\)|don't\(\)|do\(\)", corrupted_memory)
+  return instructions
   #"[m][u][l][(]\d+[,]\d+[)]"gm
 #   add ints to a two tuple
 
@@ -28,11 +30,12 @@ def multiply_factors(factors):
 
 def main ():
   total = 0
-  memory = get_memory('input.txt')
-  factor_list = find_factors(memory)
-  for factors in factor_list:
-    product = multiply_factors(factors)
-    total += product
-  print("Total = ", total)
+  memory = get_memory('example.txt')
+  instructions = find_instructions(memory)
+  print (instructions)
+  # for factors in factor_list:
+  #   product = multiply_factors(factors)
+  #   total += product
+  # print("Total = ", total)
 
 main()
