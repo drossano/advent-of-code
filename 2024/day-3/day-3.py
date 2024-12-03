@@ -10,15 +10,29 @@ def get_memory(filename):
     memory = f.read()
     return memory
 #   find a mul(INT,INT) sequence
-def find_muls(memory):
+def find_factors(corrupted_memory):
+  muls = re.findall(r"[m][u][l][(](\d+)[,](\d+)[)]", corrupted_memory)
+  return muls
   #"[m][u][l][(]\d+[,]\d+[)]"gm
 #   add ints to a two tuple
 
+
+
+  
 # Multilply each two tuple
+def multiply_factors(factors):
+  return int(factors[0]) * int(factors[1])
+
+
 # Add results
 
 def main ():
-  print(type(get_memory('example.txt')))
-        
+  total = 0
+  memory = get_memory('input.txt')
+  factor_list = find_factors(memory)
+  for factors in factor_list:
+    product = multiply_factors(factors)
+    total += product
+  print("Total = ", total)
 
 main()
