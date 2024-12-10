@@ -1,3 +1,5 @@
+import math
+
 def get_orders(filename):
   page_orders = []
   with open(filename, 'r') as orders:
@@ -28,9 +30,18 @@ def get_correct_updates(orders, updates):
       if tag:  good_updates.append(update_list)
   return good_updates
 
+def get_middle_numbers(updates):
+  nums = []
+  for update in updates:
+    mid_index = math.floor(len(update) / 2)
+    nums.append(update[mid_index])
+  return nums
+  
 def main():
-  orders = get_orders('example-order.txt')
-  updates = get_updates('example-updates.txt')
+  orders = get_orders('input-order.txt')
+  updates = get_updates('input-updates.txt')
   good_updates = get_correct_updates(orders,updates)
-  print(good_updates)
+  middle_numbers = get_middle_numbers(good_updates)
+  sum_mids = sum(middle_numbers)
+  print(sum_mids)
 main()  
