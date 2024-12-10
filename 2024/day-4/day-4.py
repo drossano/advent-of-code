@@ -47,12 +47,28 @@ def find_xmas(lines):
         xmases += 1
   return xmases
  
+def find_x_mases(word_search):
+  xmases = 0
+  for line  in range(1, len(word_search) - 1):
+    for letter in range(1, len(word_search[line]) - 1):
+      ul = word_search[line - 1][letter - 1]
+      dr = word_search[line + 1][letter + 1]
+      ur = word_search[line - 1][letter + 1]
+      dl = word_search[line + 1][letter - 1]
+      if word_search[line][letter] == 'A':
+        if ((ul == 'M' and dr == 'S') or (ul == 'S' and dr == 'M')) and ((ur == 'M' and dl == 'S') or (ur == 'S' and dl == 'M')):
+          xmases += 1
+  return xmases
+
 def main ():
   word_search = get_word_search('input.txt')
   verticals = get_verticals(word_search)
   ur_diags = get_diags(word_search, 'ur')
   dl_diags = get_diags(word_search, 'dl')
   xmases = find_xmas(word_search) + find_xmas(verticals) + find_xmas(ur_diags) + find_xmas(dl_diags)
-  print(xmases)
+  print('Part 1:', xmases)
+  x_mases = find_x_mases(word_search)
+  print('Part 2', x_mases)
+  
 
 main()

@@ -30,6 +30,10 @@ def get_correct_updates(orders, updates):
       if tag:  good_updates.append(update_list)
   return good_updates
 
+def get_bad_updates(all_updates, good_updates):
+  bad_updates = [update for update in all_updates if update not in good_updates]
+  return bad_updates
+  
 def get_middle_numbers(updates):
   nums = []
   for update in updates:
@@ -38,10 +42,11 @@ def get_middle_numbers(updates):
   return nums
   
 def main():
-  orders = get_orders('input-order.txt')
-  updates = get_updates('input-updates.txt')
+  orders = get_orders('example-order.txt')
+  updates = get_updates('example-updates.txt')
   good_updates = get_correct_updates(orders,updates)
   middle_numbers = get_middle_numbers(good_updates)
   sum_mids = sum(middle_numbers)
-  print(sum_mids)
+  bad_updates = get_bad_updates(updates, good_updates)
+  print(bad_updates)
 main()  
