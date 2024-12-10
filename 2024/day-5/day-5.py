@@ -24,6 +24,7 @@ def get_correct_updates(orders, updates):
             break
           else:
             tag = True
+        if tag == False: break
       if tag:  good_updates.append(update_list)
   return good_updates
 
