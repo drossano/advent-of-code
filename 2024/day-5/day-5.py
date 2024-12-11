@@ -34,20 +34,16 @@ def get_bad_updates(all_updates, good_updates):
   bad_updates = [update for update in all_updates if update not in good_updates]
   return bad_updates
 
-def fix_bad_updates(orders, updates):
+def fix_bad_updates(scores, updates):
   fixed_updates = []
   for update_list in updates:
-      fixed_update = update_list
       for update in update_list:
-        for order in orders:
-          if update in order:
-            update_index = update_list.index(update)
-            # if update is order[1] and order[0] is later in the list buh bye!
-            if update == order[1] and any(update == order[0] for update in update_list[update_index:]):
-              order_index = update_list.index(order[0])
-              #update_list[update_list.index(order[1])], update_list[update_list.index(order[0])] = order[0],order[1]  
-              update_list[update_index]  = order[0]
-              update_list[order_index] = order[1]
+        update_index = update_list.index(update)
+        if update in scores:
+          correct_index = scores[update]
+          if update_index != correct_index:
+              update_list.remove(update)
+              update_list.insert(correct_index, update)
       fixed_updates.append(update_list)
   return fixed_updates
 
@@ -65,25 +61,23 @@ def get_scores(orders):
       scores[order[0]] += 1
     else:
       scores[order[0]] = 1
-  print(scores)
   score_max = max(scores.values())
-  print(score_max)
   for score in scores:
     scores[score] = score_max - scores[score]
+  print(scores)
   return scores
 
 def main():
-  orders = get_orders('example-order.txt')
-  updates = get_updates('example-updates.txt')
+  orders = get_orders('input-order.txt')
+  updates = get_updates('input-updates.txt')
   good_updates = get_correct_updates(orders,updates)
   middle_numbers = get_middle_numbers(good_updates)
   sum_mids = sum(middle_numbers)
   print("Part 1: ", sum_mids)
   bad_updates = get_bad_updates(updates, good_updates)
-  fixed_updates = fix_bad_updates(orders,bad_updates)
+  scores = get_scores(orders)
+  fixed_updates = fix_bad_updates(scores,bad_updates)
   fixed_middle_numbers = get_middle_numbers(fixed_updates)
   sum_fixed_mids = sum(fixed_middle_numbers)
   print("Part 2: ", sum_fixed_mids)
-  scores = get_scores(orders)
-  print(scores)
 main()  
