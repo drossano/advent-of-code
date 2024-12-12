@@ -35,18 +35,12 @@ def get_bad_updates(all_updates, good_updates):
   return bad_updates
 
 def fix_bad_updates(scores, updates):
-  fixed_updates = []
   for update_list in updates:
-      for update in update_list:
-        update_index = update_list.index(update)
-        if update in scores:
-          correct_index = scores[update]
-          if update_index != correct_index:
-              update_list.remove(update)
-              update_list.insert(correct_index, update)
-      fixed_updates.append(update_list)
-  return fixed_updates
-
+    while True:
+      index = 0
+      swaps = 0
+      while index < len(update_list):
+        if update_list[index]: # > is before update_list[index] in scores
 def get_middle_numbers(updates):
   nums = []
   for update in updates:
@@ -54,28 +48,32 @@ def get_middle_numbers(updates):
     nums.append(update[mid_index])
   return nums
 
-def get_scores(orders):
+def get_order(orders):
   scores = dict()
   for order in orders:
     if order[0] in scores:
       scores[order[0]] += 1
-    else:
+    elif order[1] in scores:
+      scores[order[1]] -= 1
+    elif order[0] not in scores:
       scores[order[0]] = 1
+    elif order[1] not in scores:
+      scores[order[1]] = - 1
   score_max = max(scores.values())
   for score in scores:
     scores[score] = score_max - scores[score]
-  print(scores)
-  return scores
+  orders = (sorted(scores, key= scores.get))
+  return orders
 
 def main():
   orders = get_orders('input-order.txt')
   updates = get_updates('input-updates.txt')
+  scores = get_order(orders)
   good_updates = get_correct_updates(orders,updates)
   middle_numbers = get_middle_numbers(good_updates)
   sum_mids = sum(middle_numbers)
   print("Part 1: ", sum_mids)
   bad_updates = get_bad_updates(updates, good_updates)
-  scores = get_scores(orders)
   fixed_updates = fix_bad_updates(scores,bad_updates)
   fixed_middle_numbers = get_middle_numbers(fixed_updates)
   sum_fixed_mids = sum(fixed_middle_numbers)
