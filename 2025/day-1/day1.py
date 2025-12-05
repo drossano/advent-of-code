@@ -18,7 +18,17 @@ def get_password(turns):
   dial_nums = list(range(0,100))
   index = 50
   for turn in turns:
+    start_index = index
+    #check how many clicks to zero
+    if index == 0:
+      dist_to_zero = len(dial_nums)
+    elif turn > 0:
+      dist_to_zero =len(dial_nums) - index
+    elif turn < 0:
+      dist_to_zero = index
     index += turn
+    if (index > len(dial_nums) or index < 0) and start_index != 0:
+      zeroes += 1
     index = (index % len(dial_nums))
     print(index)
     if dial_nums[index % len(dial_nums)] == 0:
