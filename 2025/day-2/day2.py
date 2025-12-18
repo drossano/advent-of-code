@@ -8,34 +8,27 @@ def get_ranges_from_file(file_name):
 
 
 def check_for_repeat(num):
-    start_pos = 0
-    max_start_pos = len(str(num))//2
-    while start_pos <= max_start_pos:
-        subset_len = 1
-        max_subset_len = len(str(num))//2
-        while subset_len <= max_subset_len:
-            offset = 1
-            max_offset = len(str(num)) -start_pos - subset_len
-            while offset <= max_offset:
-                is_repeat = all(str(num)[i] == str(num)[i+offset] for i in range (start_pos, start_pos+subset_len))
-                return is_repeat
-                offset += 1
-            subset_len += 1
-        start_pos +=1    
+  num_str = str(num)
+  if len(num_str) % 2 == 0:
+    split_len = int(len(num_str) / 2)
+    first_half = num_str[:split_len]
+    second_half = num_str[split_len:]
+    return first_half==second_half
 
-print(check_for_repeat(1188511885))
+def str_to_range(range_str):
+  range_list = range_str.split('-')
+  return range(int(range_list[0]), int(range_list[1]) + 1)
 
 
 
+def add_repeats(input):
+  repeat_total = 0
+  ranges = get_ranges_from_file(input)
+  for range_str in ranges:
+    this_range = str_to_range(range_str)
+    for num in this_range:
+      if check_for_repeat(num):
+        repeat_total += num
+  return repeat_total
 
-# Your question is really "do all items from x:x+k match items from y:y+k". That is, does a k-length subset occur twice in the line?
-
-# And you want x:x+k non-overlapping with y:y+k. The easy way to do this is to define y as x plus some offset, d. If you assure that k <= d < len(line)-x-k, then you're always looking within the boundaries of the line.
-
-# You'll then vary k from 1 to len(line)//2, looking for various length duplicates at a given offset from each other.
-
-# The offset from x to y, d, will vary between 1 and len(line)-x-k.
-
-# The starting position for x, similarly will vary from 0 to len(line)//2.
-
-# So, the "all" part is something like this: all( line[i] == line[i+d] for i in range(x,x+k) ) for various legal values of d, x and k.
+print(add_repeats('./input.txt'))
